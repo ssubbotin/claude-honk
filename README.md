@@ -11,7 +11,7 @@ Honk like a goose when Claude Code is waiting for your input.
 /plugin marketplace add ssubbotin/claude-honk
 
 # Install the plugin
-/plugin install goose-honk
+/plugin install claude-honk
 ```
 
 > **Note:** After installing, you must restart Claude Code for the plugin to take effect. Plugins are loaded at session startup and cannot be hot-reloaded (yet).
