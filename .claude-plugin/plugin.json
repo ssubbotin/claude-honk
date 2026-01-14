@@ -8,5 +8,6 @@
   },
   "repository": "https://github.com/ssubbotin/claude-honk",
   "license": "MIT",
-  "keywords": ["notification", "sound", "goose", "honk"]
+  "keywords": ["notification", "sound", "goose", "honk"],
+  "hooks": "./hooks/hooks.json"
 }
