@@ -10,8 +10,9 @@
       "name": "goose-honk",
       "description": "Honk like a goose when Claude Code is waiting for user input",
       "source": {
-        "type": "local",
-        "path": "."
+        "type": "github",
+        "owner": "ssubbotin",
+        "repo": "claude-honk"
       }
     }
   ]
