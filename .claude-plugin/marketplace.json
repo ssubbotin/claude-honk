@@ -1,11 +1,18 @@
 {
   "name": "goose-honk-marketplace",
   "description": "A marketplace containing the goose-honk notification plugin",
+  "owner": {
+    "name": "Sergey Subbotin",
+    "url": "https://github.com/ssubbotin"
+  },
   "plugins": [
     {
       "name": "goose-honk",
       "description": "Honk like a goose when Claude Code is waiting for user input",
-      "path": "."
+      "source": {
+        "type": "local",
+        "path": "."
+      }
     }
   ]
 }
