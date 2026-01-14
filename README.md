@@ -14,6 +14,8 @@ Honk like a goose when Claude Code is waiting for your input.
 /plugin install goose-honk
 ```
 
+> **Note:** After installing, you must restart Claude Code for the plugin to take effect. Plugins are loaded at session startup and cannot be hot-reloaded (yet).
+
 ### Local Installation (for development)
 
 ```bash
