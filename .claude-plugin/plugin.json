@@ -1,0 +1,13 @@
+{
+  "name": "goose-honk",
+  "version": "1.0.0",
+  "description": "Honk like a goose when Claude Code is waiting for user input",
+  "author": {
+    "name": "Sergey Subbotin",
+    "email": "ssubbotin@gmail.com"
+  },
+  "repository": "https://github.com/ssubbotin/claude-honk",
+  "license": "MIT",
+  "keywords": ["notification", "sound", "goose", "honk"],
+  "hooks": "./hooks/hooks.json"
+}
