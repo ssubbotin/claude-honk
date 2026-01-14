@@ -1,14 +1,14 @@
 {
-  "name": "goose-honk-marketplace",
-  "description": "A marketplace containing the goose-honk notification plugin",
+  "name": "claude-honk-marketplace",
+  "description": "A marketplace containing the claude-honk notification plugin",
   "owner": {
     "name": "Sergey Subbotin",
     "url": "https://github.com/ssubbotin"
   },
   "plugins": [
     {
-      "name": "goose-honk",
-      "description": "Honk like a goose when Claude Code is waiting for user input",
+      "name": "claude-honk",
+      "description": "Honk like a goose when Claude Code needs attention - on notifications, permission prompts, and task completion",
       "source": {
         "source": "url",
         "url": "https://github.com/ssubbotin/claude-honk.git"
