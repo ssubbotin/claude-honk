@@ -1,7 +1,7 @@
 {
   "name": "goose-honk",
   "version": "1.0.0",
-  "description": "Honk like a goose when Claude Code is waiting for user input",
+  "description": "Honk like a goose when Claude Code needs attention - on notifications, permission prompts, and task completion",
   "author": {
     "name": "Sergey Subbotin",
     "email": "ssubbotin@gmail.com"
