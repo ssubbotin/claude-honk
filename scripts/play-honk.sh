@@ -1,18 +1,24 @@
 #!/bin/bash
 # Play goose honk sound notification.
-# Supports Linux (paplay, ffplay), macOS (afplay), and WSL (PowerShell).
+# Supports Linux (paplay, ffplay) and macOS (afplay).
+# Native Windows: see scripts/play-honk.ps1 (registered as a sibling hook).
+# WSL: install paplay or ffplay; the legacy powershell.exe Media.SoundPlayer
+#      branch was dropped because it's WAV-only and our asset is MP3.
 #
 # Volume (0-100, default 50): set via env var CLAUDE_HONK_VOLUME, or in
 #   ${XDG_CONFIG_HOME:-$HOME/.config}/claude-honk/config
-# Edits take effect on the next honk — no Claude Code restart needed.
+# Edits take effect on the next honk - no Claude Code restart needed.
 
 CONFIG_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/claude-honk/config"
-if [ -r "$CONFIG_FILE" ]; then
-    # shellcheck disable=SC1090
-    . "$CONFIG_FILE"
+
+# Env var wins; otherwise parse the file (no `source` - keep it eval-safe).
+VOLUME="$CLAUDE_HONK_VOLUME"
+if [ -z "$VOLUME" ] && [ -r "$CONFIG_FILE" ]; then
+    VOLUME=$(grep -E '^[[:space:]]*CLAUDE_HONK_VOLUME[[:space:]]*=[[:space:]]*[0-9]+' "$CONFIG_FILE" \
+        | tail -n 1 \
+        | sed -E 's/.*=[[:space:]]*([0-9]+).*/\1/')
 fi
 
-VOLUME="${CLAUDE_HONK_VOLUME:-50}"
 case "$VOLUME" in
     ''|*[!0-9]*) VOLUME=50 ;;
 esac
@@ -24,22 +30,15 @@ SOUND_FILE="${CLAUDE_PLUGIN_ROOT}/assets/goose-honk.mp3"
 AFPLAY_VOL="$((VOLUME / 100)).$(printf '%02d' $((VOLUME % 100)))"
 PAPLAY_VOL=$((VOLUME * 65536 / 100))
 
-# Try different audio players based on what's available.
-# Note: paplay doesn't support MP3, so we try ffplay first for MP3 files on Linux.
+# paplay can't decode MP3, so ffplay is checked first for .mp3 files.
 if [[ "$SOUND_FILE" == *.mp3 ]] && command -v ffplay &> /dev/null; then
     ffplay -nodisp -autoexit -volume "$VOLUME" "$SOUND_FILE" 2>/dev/null &
 elif command -v afplay &> /dev/null; then
-    # macOS - afplay supports MP3
     afplay -v "$AFPLAY_VOL" "$SOUND_FILE" &
 elif command -v paplay &> /dev/null; then
-    # paplay only supports WAV, OGG, FLAC (not MP3)
     paplay --volume="$PAPLAY_VOL" "$SOUND_FILE" 2>/dev/null &
 elif command -v ffplay &> /dev/null; then
     ffplay -nodisp -autoexit -volume "$VOLUME" "$SOUND_FILE" 2>/dev/null &
-elif command -v powershell.exe &> /dev/null; then
-    # WSL support — Media.SoundPlayer has no per-play volume control,
-    # so CLAUDE_HONK_VOLUME is ignored on this backend.
-    powershell.exe -c "(New-Object Media.SoundPlayer '$SOUND_FILE').PlaySync()" &
 fi
 
 exit 0

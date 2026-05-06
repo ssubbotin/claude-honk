@@ -32,18 +32,18 @@ Default volume is **50%**. The fastest way to change it is the slash command:
 /claude-honk:volume 30
 ```
 
-Or run `/claude-honk:volume` with no argument to be prompted interactively. Either way, it writes `CLAUDE_HONK_VOLUME` to `~/.config/claude-honk/config` and plays a test honk at the new level.
+Or run `/claude-honk:volume` with no argument to pick from a list. Either way, it writes `CLAUDE_HONK_VOLUME` to the config file and plays a test honk at the new level.
 
-You can also edit the file directly:
+You can also edit the file directly. The path is `~/.config/claude-honk/config` on Linux/macOS:
 
 ```sh
 mkdir -p ~/.config/claude-honk
 echo 'CLAUDE_HONK_VOLUME=30' > ~/.config/claude-honk/config
 ```
 
-Valid range is `0`–`100`. The file is re-read on every honk, so edits take effect immediately — no Claude Code restart needed. Setting `CLAUDE_HONK_VOLUME` in your shell environment overrides the config file.
+…and `%USERPROFILE%\.config\claude-honk\config` on Windows.
 
-> Volume control works on Linux (`ffplay`, `paplay`) and macOS (`afplay`). It is **ignored on WSL** — adjust system volume instead.
+Valid range is `0`–`100`. The file is re-read on every honk, so edits take effect immediately — no Claude Code restart needed. Setting `CLAUDE_HONK_VOLUME` in the shell environment overrides the file.
 
 ### Events
 
@@ -69,9 +69,10 @@ Available matchers:
 
 ## Supported Platforms
 
-- **Linux**: Uses `paplay` (PulseAudio) or `ffplay`
-- **macOS**: Uses `afplay`
-- **WSL**: Uses PowerShell's Media.SoundPlayer
+- **Linux**: `ffplay` (preferred for MP3) or `paplay`
+- **macOS**: `afplay`
+- **Windows**: PowerShell + Windows Media Player COM (`WMPlayer.OCX.7`), with full volume control
+- **WSL**: same as Linux — install `ffplay` (`sudo apt install ffmpeg`) or `paplay` so the bash hook can play through WSLg/PulseAudio
 
 ## Sound Attribution
 

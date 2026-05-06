@@ -1,50 +1,50 @@
 ---
-description: Set claude-honk volume (0-100). Pass a number, or ask interactively.
+description: Set claude-honk volume (0-100). Pass a number, or pick from a list.
 allowed-tools: Bash, Read, Write, AskUserQuestion
 ---
 
-You are setting the claude-honk plugin's volume. The plugin reads `CLAUDE_HONK_VOLUME` (0–100) from `~/.config/claude-honk/config` on every honk; defaults to 50.
+You are setting the claude-honk plugin's volume. The plugin reads `CLAUDE_HONK_VOLUME` (0–100, default 50) from the env var first, then from `~/.config/claude-honk/config` (Linux/macOS) or `%USERPROFILE%\.config\claude-honk\config` (Windows). The file is parsed for `CLAUDE_HONK_VOLUME=<number>`; nothing else.
 
 ## Step 1 — read current state
 
-Read `~/.config/claude-honk/config` if it exists. Extract the current `CLAUDE_HONK_VOLUME` value if present; otherwise the effective default is `50`.
+Read the config file if it exists. Extract the current `CLAUDE_HONK_VOLUME` value. If absent, the effective default is `50`.
 
 ## Step 2 — determine the new volume
 
-If the user's invocation included a numeric argument between 0 and 100 (e.g. `/claude-honk:volume 30`), use that as the new volume.
+If the user's invocation included a numeric argument between 0 and 100 (e.g. `/claude-honk:volume 30`), use that value and skip to Step 3.
 
-Otherwise, call `AskUserQuestion` with:
+Otherwise, call `AskUserQuestion`:
 - header: "Volume"
 - question: "Current volume: <CURRENT>. Set new claude-honk volume:"
 - multiSelect: false
-- options: ["10 (very quiet)", "25 (quiet)", "50 (default)", "75 (loud)", "100 (max)", "Custom"]
+- options: ["10 (very quiet)", "15", "20 (quiet)", "30", "50 (default)", "75 (loud)", "100 (max)"]
 
-If the user picks "Custom", call `AskUserQuestion` again with a free-form prompt asking for a number 0–100.
-
-Validate the new value is an integer in [0, 100]. If not, report the error and stop.
+Parse the leading integer from the chosen option. Validate it is in [0, 100]; otherwise stop and report.
 
 ## Step 3 — write the config
 
-Use the Write tool to write `~/.config/claude-honk/config` with exactly:
+Use the Write tool to write the config file with exactly:
 
 ```
 CLAUDE_HONK_VOLUME=<NEW_VALUE>
 ```
 
-Create the directory first via `mkdir -p ~/.config/claude-honk` if needed (use Bash). Do not preserve other lines from the file — this command owns the entire file. (If you ever add other settings here, update this command.)
+Create the directory first if needed (`mkdir -p ~/.config/claude-honk` on Unix, or `New-Item -ItemType Directory -Force` on Windows). This command owns the entire file — do not preserve other lines. (If more settings are ever added, update this command to preserve them.)
 
 ## Step 4 — play a test honk
 
-Resolve the plugin root and play one honk at the new volume so the user hears it:
+Pick the right script for the current OS and run it with the new volume so the user hears it:
 
 ```bash
-CLAUDE_PLUGIN_ROOT="${CLAUDE_PLUGIN_ROOT:-$(ls -d ~/.claude/plugins/cache/claude-honk-marketplace/claude-honk/*/ 2>/dev/null | sort -V | tail -1)}" \
-  CLAUDE_HONK_VOLUME=<NEW_VALUE> \
-  "${CLAUDE_PLUGIN_ROOT}/scripts/play-honk.sh"
+if [ -n "$CLAUDE_PLUGIN_ROOT" ] && [ -r "$CLAUDE_PLUGIN_ROOT/scripts/play-honk.sh" ] && command -v bash >/dev/null 2>&1; then
+    CLAUDE_HONK_VOLUME=<NEW_VALUE> bash "$CLAUDE_PLUGIN_ROOT/scripts/play-honk.sh"
+elif [ -n "$CLAUDE_PLUGIN_ROOT" ] && command -v powershell.exe >/dev/null 2>&1; then
+    CLAUDE_HONK_VOLUME=<NEW_VALUE> powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$CLAUDE_PLUGIN_ROOT/scripts/play-honk.ps1"
+fi
 ```
 
-If the resolved path doesn't contain `scripts/play-honk.sh`, skip the test honk and tell the user where the config was written.
+If neither path runs, skip the test honk and tell the user where the config was written; the next real hook event will use the new value.
 
 ## Step 5 — confirm
 
-Report in one short sentence: the new volume, the config file path, and a note that future changes to that file take effect on the next honk (no restart needed).
+Report in one short sentence: the new volume, the config file path, and that future edits to that file take effect on the next honk (no restart needed).
