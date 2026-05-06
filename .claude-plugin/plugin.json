@@ -1,6 +1,6 @@
 {
   "name": "claude-honk",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Honk like a goose when Claude Code needs attention - on notifications, permission prompts, and task completion",
   "author": {
     "name": "Sergey Subbotin",
@@ -8,6 +8,5 @@
   },
   "repository": "https://github.com/ssubbotin/claude-honk",
   "license": "MIT",
-  "keywords": ["notification", "sound", "goose", "honk"],
-  "hooks": "./hooks/hooks.json"
+  "keywords": ["notification", "sound", "goose", "honk"]
 }
