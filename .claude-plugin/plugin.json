@@ -1,6 +1,6 @@
 {
   "name": "claude-honk",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "Honk like a goose when Claude Code needs attention - on notifications, permission prompts, and task completion",
   "author": {
     "name": "Sergey Subbotin",
