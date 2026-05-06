@@ -24,7 +24,22 @@ claude --plugin-dir /path/to/claude-honk
 
 ## Configuration
 
-By default, the plugin honks on **all notifications**. To customize, edit `hooks/hooks.json`:
+### Volume
+
+Default volume is **50%**. To change it, create `~/.config/claude-honk/config`:
+
+```sh
+mkdir -p ~/.config/claude-honk
+echo 'CLAUDE_HONK_VOLUME=30' > ~/.config/claude-honk/config
+```
+
+Valid range is `0`–`100`. The file is re-read on every honk, so edits take effect immediately — no Claude Code restart needed. You can also set `CLAUDE_HONK_VOLUME` directly in your shell environment; it overrides the config file.
+
+> Volume control works on Linux (`ffplay`, `paplay`) and macOS (`afplay`). It is **ignored on WSL** — adjust system volume instead.
+
+### Events
+
+By default, the plugin honks on **all notifications**, permission requests, and task completion. To customize, edit `hooks/hooks.json`:
 
 ```json
 {
