@@ -6,11 +6,11 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/scripts/play-honk.sh\""
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/scripts/play-honk.sh\" ; exit 0"
           },
           {
             "type": "command",
-            "command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"${CLAUDE_PLUGIN_ROOT}/scripts/play-honk.ps1\""
+            "command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"${CLAUDE_PLUGIN_ROOT}/scripts/play-honk.ps1\" ; exit 0"
           }
         ]
       }
@@ -21,11 +21,11 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/scripts/play-honk.sh\""
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/scripts/play-honk.sh\" ; exit 0"
           },
           {
             "type": "command",
-            "command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"${CLAUDE_PLUGIN_ROOT}/scripts/play-honk.ps1\""
+            "command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"${CLAUDE_PLUGIN_ROOT}/scripts/play-honk.ps1\" ; exit 0"
           }
         ]
       }
@@ -36,11 +36,11 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/scripts/play-honk.sh\""
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/scripts/play-honk.sh\" ; exit 0"
           },
           {
             "type": "command",
-            "command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"${CLAUDE_PLUGIN_ROOT}/scripts/play-honk.ps1\""
+            "command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"${CLAUDE_PLUGIN_ROOT}/scripts/play-honk.ps1\" ; exit 0"
           }
         ]
       }
